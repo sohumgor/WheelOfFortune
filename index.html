@@ -1,1 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wheel of Fortune</title>
+<style>
+    body{
+        background-color:lightyellow;
+    }
+    #header{
+        color:darkred;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    #win{
+        font-weight:bolder;
+    }
+    p{
+        font-size: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold
+    }
+    button{
+        height:40px;
+        width:200px;
+        font-size:100%;
+        background-color:orange;
+        color:white;
+        border-color:darkorange;
+        border-radius: 8px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    img {
+        padding-bottom:20px;
+    }
+    #showWord{
+        font-family:"Lucida Console", "Courier New", monospace;
+        font-size:20px;
+    }
+</style>
+</head>
+<body>
 
+<h1 id = "header">Welcome to Wheel of Fortune!</h1>
+<button type="button" onclick="Start()">Click to start the game!</button>
+<p id =  id = images></p>
+<p>Category: <span id = "showcategory"></span></p>
+<p id = "showWord"></p>
+<p id = "lettercheck" ></p>
+<br>
+<p id="playerspin"></p>
+<img id="image" src="https://codehs.com/uploads/5055e1083ea569e7540d91dfd38b08be" alt="Image">
+<br>
+<h2 id="win"></h2>
+<br>
+<button id = "spin" type="button" onclick="wheelAnimation()">Click to spin the wheel.</button>
+
+<p id="dollaramount"></p>
+<button id = "guessletter" type="button" onclick="Guess()">Click to guess a letter.</button>
+<br>
+<p id = "lettervalid"></p>
+<p id="values"><span id = "player1name">Player 1</span> Money = <span id = "player1money">0</span>, <span id = "player2name">Player 2</span> Money = <span id = player2money>0</span>, <span id = "player3name">Player 3</span> Money = <span id = player3money>0</span></p>
+<br>
+
+<script>
+    //Create our global variables to run the game
+    //array of player names
+    var PlayerNames =[]
+    //number of players in each game
+    var NumberofPlayers = 3;
+    //array of possible words for playing the game
+    var randomInteger;
+    var food = ["sandwich", "pancake", "croissant", "hamburger", "oatmeal"];
+    var animal = ["hippopotamus", "kangaroo", "elephant", "leopard", "tortoise"];
+    var place = ["restaurant", "aquarium", "museum", "airport", "playground"];
+    var catagories = [food, animal, place];
+    //var wheelimages = [];
+    //wheelimages.push('https://codehs.com/uploads/707ec0cdde1e58677291b987d835879b');
+    //wheelimages.push('https://codehs.com/uploads/7c45a9b8b8c5fde6b1257a5f6244bd16');
+
+    var wheelValues = [500, 750, -1, 350, 250, 600, 400, 150, 250, 400, 200, -2, 450, 150, 200, 100, 850, 200, 300, 400, 500, 100, 200, 300];
+    var imageArray = [];
+    var currentIndex = 0;
+    var delay = 100; 
+    var stopped = false;
+
+        // Create image objects and set their src attributes.
+        var image1 = new Image();
+        image1.src = 'https://codehs.com/uploads/5055e1083ea569e7540d91dfd38b08be';
+        imageArray.push(image1);
+
+        var image2 = new Image();
+        image2.src = 'https://codehs.com/uploads/9060f57f7de26aa5587f6b0a5a439cb6';
+        imageArray.push(image2);
+
+        var image3 = new Image();
+        image3.src = 'https://codehs.com/uploads/a4b9e60715ec4cb109454ee69e01abda';
+        imageArray.push(image3);
+     
+        var image4 = new Image();
+        image4.src = 'https://codehs.com/uploads/883ff30d7d8a573618ef4494ecab263a';
+        imageArray.push(image4);
+
+        var image5 = new Image();
+        image5.src = 'https://codehs.com/uploads/22d34c2dca9e3b7e1539f86c51f0a74c';
+        imageArray.push(image5);
+        
+        var image6 = new Image();
+        image6.src = 'https://codehs.com/uploads/73c33efadf5afba1c057b3b2560d64d4';
+        imageArray.push(image6);
+        
+        var image7 = new Image();
+        image7.src = 'https://codehs.com/uploads/4c91204cb815c375033e7c78901c95d1';
+        imageArray.push(image7);
+        
+        var image8 = new Image();
+        image8.src = 'https://codehs.com/uploads/150a147b2dc171204104ae030b4e9e14';
+        imageArray.push(image8);
+        
+        var image9 = new Image();
+        image9.src = 'https://codehs.com/uploads/ac02a9d7f10d5ecfd679aacbf49125c8';
+        imageArray.push(image9);
+        
+        var image10 = new Image();
+        image10.src = 'https://codehs.com/uploads/198777f5d96aab0bf8ad9397ea9e3d0d';
+        imageArray.push(image10);
+        
+        var image11 = new Image();
+        image11.src = 'https://codehs.com/uploads/cebf08e6580b27b142bda25978ab080b';
+        imageArray.push(image11);
+        
+        var image12 = new Image();
+        image12.src = 'https://codehs.com/uploads/4073f3205855e1c4d595a5e690cad64d';
+        imageArray.push(image12);
+        
+        var image13 = new Image();
+        image13.src = 'https://codehs.com/uploads/2cf6947813677c4fa85a6fbbbf44690f';
+        imageArray.push(image13);
+        
+        var image14 = new Image();
+        image14.src = 'https://codehs.com/uploads/fbf030631eaa1ae1b10e43ed5b5bbebb';
+        imageArray.push(image14);
+        
+        var image15 = new Image();
+        image15.src = 'https://codehs.com/uploads/676d82c576e75065db305a3a265a836e';
+        imageArray.push(image15);
+           
+        var image16 = new Image();
+        image16.src = 'https://codehs.com/uploads/effe36193deaa8076adbd1f185f2d513';
+        imageArray.push(image16);
+        
+        var image17 = new Image();
+        image17.src = 'https://codehs.com/uploads/57d5ab7a9fc9867b24602ac8592f0af4';
+        imageArray.push(image17);
+        
+        var image18 = new Image();
+        image18.src = 'https://codehs.com/uploads/4225a82d3ceb00411fdab81c6807fdd6';
+        imageArray.push(image18);
+        
+        var image19 = new Image();
+        image19.src = 'https://codehs.com/uploads/8ae63df409ba56a3b4c8d196527aefea';
+        imageArray.push(image19);
+        
+        var image20 = new Image();
+        image20.src = 'https://codehs.com/uploads/fe605478c29011131409c5815f467250';
+        imageArray.push(image20);
+        
+        var image21 = new Image();
+        image21.src = 'https://codehs.com/uploads/e5bfd3b942c0add1c10b16ab246ba679';
+        imageArray.push(image21);
+        
+        var image22 = new Image();
+        image22.src = 'https://codehs.com/uploads/946712f15fcf72ef89fd4be3503cb04a';
+        imageArray.push(image22);
+        
+        var image23 = new Image();
+        image23.src = 'https://codehs.com/uploads/6d122105787152123d5b5fb81dec45df';
+        imageArray.push(image23);
+        
+        var image24 = new Image();
+        image24.src = 'https://codehs.com/uploads/8f23a8ba1d819c239f22f12636c9d926';
+        imageArray.push(image24);
+        
+        var image25 = new Image();
+        image25.src = 'https://codehs.com/uploads/5055e1083ea569e7540d91dfd38b08be';
+        imageArray.push(image25);
+
+        var image26 = new Image();
+        image26.src = 'https://codehs.com/uploads/9060f57f7de26aa5587f6b0a5a439cb6';
+        imageArray.push(image26);
+
+        var image27 = new Image();
+        image27.src = 'https://codehs.com/uploads/a4b9e60715ec4cb109454ee69e01abda';
+        imageArray.push(image27);
+     
+        var image28 = new Image();
+        image28.src = 'https://codehs.com/uploads/883ff30d7d8a573618ef4494ecab263a';
+        imageArray.push(image28);
+
+        var image29 = new Image();
+        image29.src = 'https://codehs.com/uploads/22d34c2dca9e3b7e1539f86c51f0a74c';
+        imageArray.push(image29);
+        
+        var image30 = new Image();
+        image30.src = 'https://codehs.com/uploads/73c33efadf5afba1c057b3b2560d64d4';
+        imageArray.push(image30);
+        
+        var image31 = new Image();
+        image31.src = 'https://codehs.com/uploads/4c91204cb815c375033e7c78901c95d1';
+        imageArray.push(image31);
+        
+        var image32 = new Image();
+        image32.src = 'https://codehs.com/uploads/150a147b2dc171204104ae030b4e9e14';
+        imageArray.push(image32);
+        
+        var image33 = new Image();
+        image33.src = 'https://codehs.com/uploads/ac02a9d7f10d5ecfd679aacbf49125c8';
+        imageArray.push(image33);
+        
+        var image34 = new Image();
+        image34.src = 'https://codehs.com/uploads/198777f5d96aab0bf8ad9397ea9e3d0d';
+        imageArray.push(image34);
+        
+        var image35 = new Image();
+        image35.src = 'https://codehs.com/uploads/cebf08e6580b27b142bda25978ab080b';
+        imageArray.push(image35);
+        
+        var image36 = new Image();
+        image36.src = 'https://codehs.com/uploads/4073f3205855e1c4d595a5e690cad64d';
+        imageArray.push(image36);
+        
+        var image37 = new Image();
+        image37.src = 'https://codehs.com/uploads/2cf6947813677c4fa85a6fbbbf44690f';
+        imageArray.push(image37);
+        
+        var image38 = new Image();
+        image38.src = 'https://codehs.com/uploads/fbf030631eaa1ae1b10e43ed5b5bbebb';
+        imageArray.push(image38);
+        
+        var image39 = new Image();
+        image39.src = 'https://codehs.com/uploads/676d82c576e75065db305a3a265a836e';
+        imageArray.push(image39);
+           
+        var image40 = new Image();
+        image40.src = 'https://codehs.com/uploads/effe36193deaa8076adbd1f185f2d513';
+        imageArray.push(image40);
+        
+        var image41 = new Image();
+        image41.src = 'https://codehs.com/uploads/57d5ab7a9fc9867b24602ac8592f0af4';
+        imageArray.push(image41);
+        
+        var image42 = new Image();
+        image42.src = 'https://codehs.com/uploads/4225a82d3ceb00411fdab81c6807fdd6';
+        imageArray.push(image42);
+        
+        var image43 = new Image();
+        image43.src = 'https://codehs.com/uploads/8ae63df409ba56a3b4c8d196527aefea';
+        imageArray.push(image43);
+        
+        var image44 = new Image();
+        image44.src = 'https://codehs.com/uploads/fe605478c29011131409c5815f467250';
+        imageArray.push(image44);
+        
+        var image45 = new Image();
+        image45.src = 'https://codehs.com/uploads/e5bfd3b942c0add1c10b16ab246ba679';
+        imageArray.push(image45);
+        
+        var image46 = new Image();
+        image46.src = 'https://codehs.com/uploads/946712f15fcf72ef89fd4be3503cb04a';
+        imageArray.push(image46);
+        
+        var image47 = new Image();
+        image47.src = 'https://codehs.com/uploads/6d122105787152123d5b5fb81dec45df';
+        imageArray.push(image47);
+        
+        var image48 = new Image();
+        image48.src = 'https://codehs.com/uploads/8f23a8ba1d819c239f22f12636c9d926';
+        imageArray.push(image48);
+        
+        var randomInteger;
+        
+        var imageElement;
+
+    //keep track of the letters that have been guess and the underscores
+    var board;
+    //dollar amount each player has
+    var Money = [0, 0, 0];
+    //the particular word for this round
+    var word;
+    //value of the current spin
+    var currentcategory;
+    var spinValue;
+    //total correct guesses
+    var totGuessed = 0;
+    //index value of whose turn it is
+    var playerTurn;
+    //whether the wheel has been spun or not
+    var spunWheel = 0;
+    //the current guess from the player
+    var newGuess;
+    //array to keep track of the guessed letters
+    var Guesses = [];
+    //wheel options array
+    var WheelofFortune = [500, 750, -1, 350, 250, 600, 400, 150, 250, 400, 200, -2, 450, 150, 200, 100, 850, 200, 300, 400, 500, 100, 200, 300];
+    //current letter guessed by user
+    var currentGuess = "";
+    var bankrupt = false;
+    //function to start the game and get the player names
+    function Start(){
+        for(var i = 1; i <= NumberofPlayers; i++){
+            PlayerNames.push(prompt("What is the name of player #" + i ));
+        }
+        
+        document.getElementById("player1name").innerHTML = PlayerNames[0];
+        document.getElementById("player2name").innerHTML = PlayerNames[1];
+        document.getElementById("player3name").innerHTML = PlayerNames[2];
+
+        InitGame();
+    }
+
+    //function to choose the random word to start the game, and decide who goes first
+    function InitGame(){
+        var n = Math.floor(Math.random()* catagories.length);
+        currentcategory = catagories[n];
+        var x = Math.floor(Math.random()* currentcategory.length);
+        word = currentcategory[x];
+        makeWord();
+        if(currentcategory == food){
+            document.getElementById("showcategory").innerHTML = "Food";
+        }
+        if(currentcategory == animal){
+            document.getElementById("showcategory").innerHTML = "Animal";
+        }
+        if(currentcategory == place){
+            document.getElementById("showcategory").innerHTML = "Place";
+        }
+
+        document.getElementById("showWord").innerHTML = "Game Board: " + board;
+
+        playerTurn = Math.floor(Math.random()* NumberofPlayers);
+        
+        document.getElementById("spin").innerHTML = PlayerNames[playerTurn] + ", click to spin!";
+        document.getElementById("guessletter").innerHTML = PlayerNames[playerTurn] + ", click to guess a letter!";
+    }
+
+    //function to print the word of guessed letters and underscores
+    //creates blank word space when game is initialized
+    function makeWord(){
+        //add a variable to check if the letter guessed is found in the word
+        var found = false;
+        board = "";
+        //loop through the word and find the letter if it has been guessed, print it
+        //if the letter has not been guessed, print an underscore
+
+        for(var i =0; i < word.length; i++){
+            found = false;
+            for(var j=0; j < Guesses.length; j++){
+                //check if the letter in the word matches any in the guesses array
+                if(Guesses[j] === word[i]) {
+                    //register that the letter has been found
+                    found = true;
+                    //add the letter to the game board
+                    board = board + Guesses[j];
+                }
+
+            }
+            if(found === false){
+
+                board = board + " _ ";
+                
+                
+            }
+            
+
+        }
+        
+        
+        document.getElementById("showWord").innerHTML = "Game Board: " + board;
+        
+    }
+ 
+     function checkWord(currentGuess){
+        //add a variable to check if the letter guessed is found in the word
+        var found = false;
+        board = "";
+        var checkfound = false;
+        var counter = 0;
+         document.getElementById("lettercheck").innerHTML = "";
+        //loop through the word and find the letter if it has been guessed, print it
+        //if the letter has not been guessed, print an underscore
+        
+        for(var i =0; i < word.length; i++){
+            found = false;
+            
+            for(var j=0; j < Guesses.length; j++){
+                //check if the letter in the word matches any in the guesses array
+                if(Guesses[j] === word[i]) {
+                    //register that the letter has been found
+                    found = true;
+                    counter++;
+                    //add the letter to the game board
+                    board = board + Guesses[j];
+                    
+                }
+
+            }
+                
+                if(found === false){
+
+                board = board + " _ ";
+                }
+                
+            }
+
+        for(var i =0; i < word.length; i++){
+                //check if the letter in the word matches any in the guesses array
+                if(currentGuess == word[i]) {
+                    checkfound = true;
+                    
+                }
+
+            }
+            
+
+            
+
+        
+        if(bankrupt === false){
+            document.getElementById("dollaramount").innerHTML = " ";
+        }
+        
+
+        if(checkfound === true){
+
+            document.getElementById("lettercheck").style.color = "green";
+            document.getElementById("lettercheck").innerHTML = "Correct, letter is in the word!";
+            document.getElementById("playerspin").innerHTML = PlayerNames[playerTurn] + " spin the wheel again!";
+
+        }
+        if(checkfound === false){
+            document.getElementById("lettercheck").style.color = "red";
+            document.getElementById("lettercheck").innerHTML = "Wrong, letter is not in the word!";
+            SwitchPlayer();
+        }
+                    
+        document.getElementById("showWord").innerHTML = "Game Board: " + board;
+        if(checkfound === true){
+        AddMoney();
+        }
+        
+        if(counter == word.length){
+            document.getElementById("lettercheck").innerHTML = "";
+            document.getElementById("win").style.color = "#a38907";
+            document.getElementById("win").innerHTML = PlayerNames[playerTurn] + " is the winner, earning $" + Money[playerTurn] + "!";
+            if(playerTurn == 0){
+            document.getElementById("player2money").innerHTML = "$0";
+            document.getElementById("player3money").innerHTML = "$0";
+            }
+            if(playerTurn == 1){
+            document.getElementById("player1money").innerHTML = "$0";
+            document.getElementById("player3money").innerHTML = "$0";
+            }
+            if(playerTurn == 2){
+            document.getElementById("player1money").innerHTML = "$0";
+            document.getElementById("player2money").innerHTML = "$0";
+            }
+        }
+        
+    }
+        
+
+    //function to add money to player's account when they get a letter right
+    function AddMoney(){
+       if(bankrupt === false){
+            Money[playerTurn] += spinValue;
+       }
+       
+        
+        if(playerTurn == 0){
+            document.getElementById("player1money").innerHTML = "$" + Money[playerTurn];
+        }
+        if(playerTurn == 1){
+            document.getElementById("player2money").innerHTML = "$" + Money[playerTurn];
+        }
+        if(playerTurn == 2){
+            document.getElementById("player3money").innerHTML = "$" + Money[playerTurn];
+        }
+    }
+
+    //function to switch whose turn it is
+    function SwitchPlayer(){
+        if(playerTurn == 2){
+            playerTurn = 0;
+        }
+        else{
+            playerTurn ++;
+        }
+
+        document.getElementById("spin").innerHTML = PlayerNames[playerTurn] + ", click to spin!";
+        document.getElementById("guessletter").innerHTML = PlayerNames[playerTurn] + ", click to guess a letter!";
+        document.getElementById("playerspin").innerHTML = PlayerNames[playerTurn] + " spin the wheel!";
+    
+    }
+    
+    function wheelAnimation(){
+        currentIndex = 0;
+        imageElement = document.getElementById('image');
+        randomInteger = Math.floor(Math.random() * 24) + 24;;
+        shuffleImages();
+        
+    }
+        
+
+        function displayImage(index) {
+
+            imageElement.src = imageArray[index].src;
+        }
+        
+
+        function shuffleImages() {
+            
+            displayImage(currentIndex);
+            
+            
+            if (currentIndex == randomInteger) {
+                stopped = true;
+                spinWheel();
+                return; 
+            }
+          
+            currentIndex = (currentIndex + 1) % imageArray.length;
+
+
+            setTimeout(shuffleImages, delay);
+        
+    
+        }
+    //function to spin the wheel and randomly select a dollar amount
+    function spinWheel(){
+        document.getElementById("lettercheck").innerHTML = "";
+        //register the wheel has been spun
+        spunWheel = 1;
+        if(randomInteger > 23){
+            randomInteger -= 24;
+        }
+        var r = randomInteger;
+        //check if they go bankrupt
+        if(wheelValues[r]===-1){
+            document.getElementById("dollaramount").innerHTML = PlayerNames[playerTurn] + " went BANKRUPT!";
+            //set that player's account equal to 0
+            Money[playerTurn] = 0;
+            bankrupt = true;
+            AddMoney();
+            //switch players
+            SwitchPlayer();
+            //register the wheel as not spun
+            spunWheel = 0;
+            //display dollar amounts
+            
+            document.getElementById("values").innerHTML = names[0] + " Money = " + Money[0] + ", " + names[1] + " Money = " + Money[1] + ", " + names[2] + " Money = " + Money[2];
+        }
+        
+            if(wheelValues[r]===-2){
+            document.getElementById("dollaramount").innerHTML = "Skip " + PlayerNames[playerTurn] + " turn!";
+            //switch players
+            SwitchPlayer();
+            //register the wheel as not spun
+            spunWheel = 0;
+            //display dollar amounts
+            
+            document.getElementById("values").innerHTML = names[0] + " Money = " + Money[0] + ", " + names[1] + " Money = " + Money[1] + ", " + names[2] + " Money = " + Money[2];
+        }
+        
+        
+        else{
+            //save the value of the spin as spinValue
+            bankrupt = false; 
+            spinValue = wheelValues[r];
+            document.getElementById("dollaramount").innerHTML = "You have spun: $" + spinValue;
+        }
+        
+        document.getElementById("playerspin").innerHTML = "";
+        
+    }
+
+    //function to let the player guess a letter
+    function Guess(checkinput, checkrepeat){
+
+        var userGuess = "";
+        
+        if(checkinput == false){
+            userGuess = prompt("You entered an invalid character. What letter do you want to guess?");
+        }
+        if(checkrepeat == true){
+            userGuess = prompt("You already guessed this letter. What new letter do you want to guess?");
+        }
+        else{
+        userGuess = prompt("What letter is do you want to guess?");
+        }
+        const pattern = /^[a-zA-Z]$/;
+        
+        var checkinput = pattern.test(userGuess);
+        
+     
+        var checkrepeat = false;
+        
+            
+        if(Guesses.includes(userGuess)){
+            checkrepeat = true;
+            Guess(checkinput, checkrepeat)
+        }
+        else{
+        checkrepeat = false;
+        if(checkinput == true){
+    
+           Guesses.push(userGuess);
+           currentGuess = userGuess;
+           checkWord(currentGuess);
+        }
+        else{
+            Guess(checkinput);
+        }
+        }
+  
+        
+    }
+
+
+</script>
+
+
+</body>
+</html>
